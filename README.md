@@ -187,6 +187,12 @@ El archivo `frontend/vercel.json` ya incluye rewrite SPA para rutas internas.
 ./scripts/smoke-test.sh "https://api-tu-proyecto.up.railway.app" "https://tu-frontend.vercel.app"
 ```
 
+## 🤝 Contribucion
+
+Este repositorio usa flujo de ramas + Pull Request obligatorio sobre `main`.
+
+- Revisa la guia completa en `CONTRIBUTING.md`
+
 ## 🧱 Estado del MVP
 
 - 🔐 JWT y control de acceso por roles (ADMIN, EMISOR)
