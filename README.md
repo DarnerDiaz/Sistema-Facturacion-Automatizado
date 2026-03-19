@@ -1,35 +1,39 @@
-# Sistema de Facturacion Electronica Automatizado
+# 🚀 Sistema de Facturacion Electronica Automatizado
+
+![CI](https://img.shields.io/github/actions/workflow/status/DarnerDiaz/Sistema-Facturacion-Automatizado/ci.yml?branch=main&label=CI&style=for-the-badge)
+![Version](https://img.shields.io/github/v/release/DarnerDiaz/Sistema-Facturacion-Automatizado?display_name=tag&style=for-the-badge)
+![Stack](https://img.shields.io/badge/Stack-Spring%20Boot%20%7C%20React%20%7C%20MySQL-2ea44f?style=for-the-badge)
 
 MVP orientado a Peru (PEN + IGV 18%) para gestionar facturas de extremo a extremo.
 
-Flujo principal del sistema:
+## ✨ Flujo principal del sistema
 
-1. Registrar cliente
-2. Crear factura con items
-3. Validar calculos y reglas
-4. Emitir factura
-5. Generar PDF
-6. Enviar por correo
-7. Mantener historial y trazabilidad
+1. 👤 Registrar cliente
+2. 🧾 Crear factura con items
+3. ✅ Validar calculos y reglas
+4. 📤 Emitir factura
+5. 📄 Generar PDF
+6. 📧 Enviar por correo
+7. 🕘 Mantener historial y trazabilidad
 
-## Que incluye este proyecto
+## 📦 Que incluye este proyecto
 
-- Backend API con Spring Boot, JWT, persistencia y migraciones
-- Frontend web con React para operar clientes y facturas
-- Generacion de PDF con iText
-- Envio de correo SMTP (recomendado SendGrid)
-- Contenedores Docker para entorno local
-- CI en GitHub Actions
-- Archivos listos para despliegue en Railway (backend) y Vercel (frontend)
+- ⚙️ Backend API con Spring Boot, JWT, persistencia y migraciones
+- 🖥️ Frontend web con React para operar clientes y facturas
+- 📄 Generacion de PDF con iText
+- ✉️ Envio de correo SMTP (recomendado SendGrid)
+- 🐳 Contenedores Docker para entorno local
+- 🔁 CI en GitHub Actions
+- ☁️ Archivos listos para despliegue en Railway (backend) y Vercel (frontend)
 
-## Stack tecnico
+## 🧠 Stack tecnico
 
 - Backend: Java 17, Spring Boot, Spring Security, JPA, Flyway, MySQL, iText
 - Frontend: React + Vite
 - Infra: Docker Compose
 - Auth: JWT (access + refresh)
 
-## Estructura del repositorio
+## 🗂️ Estructura del repositorio
 
 - backend: API REST, seguridad y logica de negocio
 - frontend: aplicacion React
@@ -37,14 +41,14 @@ Flujo principal del sistema:
 - scripts: smoke tests
 - docs: guias operativas de despliegue
 
-## Inicio rapido (recomendado)
+## ⚡ Inicio rapido (recomendado)
 
-Prerequisitos:
+### 🧩 Prerequisitos
 
 - Docker + Docker Compose
 - Puertos libres 5173, 8080, 3306, 8025
 
-Pasos:
+### 🛠️ Pasos
 
 1. Copia `.env.example` a `.env`
 2. Ajusta secretos y credenciales
@@ -54,30 +58,30 @@ Pasos:
 docker compose up --build
 ```
 
-Accesos locales:
+### 🌐 Accesos locales
 
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:8080
 - Health: http://localhost:8080/actuator/health
 - Mailpit (correo de prueba): http://localhost:8025
 
-## Inicio rapido sin Docker
+## 🧪 Inicio rapido sin Docker
 
-Backend:
+### Backend
 
 ```bash
 cd backend
 ./mvnw spring-boot:run
 ```
 
-En Windows:
+### En Windows
 
 ```powershell
 cd backend
 .\mvnw.cmd spring-boot:run
 ```
 
-Frontend:
+### Frontend
 
 ```bash
 cd frontend
@@ -85,7 +89,7 @@ npm install
 npm run dev
 ```
 
-## Primera prueba funcional (5 minutos)
+## 🎯 Primera prueba funcional (5 minutos)
 
 1. Registra un usuario en `/api/v1/auth/register`
 2. Inicia sesion en la UI
@@ -95,13 +99,13 @@ npm run dev
 6. Descarga el PDF
 7. Envia la factura por correo
 
-Tip: si usas Mailpit en local, revisa los correos en http://localhost:8025.
+💡 Tip: si usas Mailpit en local, revisa los correos en http://localhost:8025.
 
-## Variables de entorno
+## 🔐 Variables de entorno
 
 Usa `.env.example` como plantilla principal.
 
-Backend (clave):
+### Backend (clave)
 
 - SPRING_PROFILES_ACTIVE
 - APP_BASE_URL
@@ -116,25 +120,25 @@ Backend (clave):
 - MAIL_FROM
 - CORS_ALLOWED_ORIGINS
 
-Frontend (clave):
+### Frontend (clave)
 
 - VITE_API_URL
 
-## Endpoints principales
+## 🔌 Endpoints principales
 
-Auth:
+### Auth
 
 - POST /api/v1/auth/register
 - POST /api/v1/auth/login
 - POST /api/v1/auth/refresh
 
-Clientes:
+### Clientes
 
 - POST /api/v1/customers
 - GET /api/v1/customers
 - GET /api/v1/customers/{id}
 
-Facturas:
+### Facturas
 
 - POST /api/v1/invoices
 - POST /api/v1/invoices/validate
@@ -144,9 +148,9 @@ Facturas:
 - GET /api/v1/invoices/{id}/pdf
 - POST /api/v1/invoices/{id}/send-email
 
-## Despliegue
+## 🚀 Despliegue
 
-### Railway (backend)
+### 🚂 Railway (backend)
 
 1. Crea proyecto en Railway
 2. Agrega MySQL
@@ -154,9 +158,9 @@ Facturas:
 4. Configura variables de entorno (ver `.env.example`)
 5. Usa healthcheck en `/actuator/health`
 
-Nota: Flyway ejecuta migraciones automaticamente al arranque.
+📝 Nota: Flyway ejecuta migraciones automaticamente al arranque.
 
-### Vercel (frontend)
+### ▲ Vercel (frontend)
 
 1. Crea proyecto apuntando a carpeta `frontend`
 2. Configura `VITE_API_URL` con la URL publica del backend
@@ -165,29 +169,29 @@ Nota: Flyway ejecuta migraciones automaticamente al arranque.
 
 El archivo `frontend/vercel.json` ya incluye rewrite SPA para rutas internas.
 
-## Verificacion post deploy
+## ✅ Verificacion post deploy
 
-Checklist completa:
+### Checklist completa
 
 - docs/DEPLOY_CHECKLIST.md
 
-Smoke test (PowerShell):
+### Smoke test (PowerShell)
 
 ```powershell
 ./scripts/smoke-test.ps1 -BaseUrl "https://api-tu-proyecto.up.railway.app" -FrontendUrl "https://tu-frontend.vercel.app"
 ```
 
-Smoke test (bash):
+### Smoke test (bash)
 
 ```bash
 ./scripts/smoke-test.sh "https://api-tu-proyecto.up.railway.app" "https://tu-frontend.vercel.app"
 ```
 
-## Estado del MVP
+## 🧱 Estado del MVP
 
-- JWT y control de acceso por roles (ADMIN, EMISOR)
-- Modulo de clientes
-- Modulo de facturas con validacion
-- Emision, PDF y envio por correo
-- Historial basico de eventos
-- CI con build backend y frontend
+- 🔐 JWT y control de acceso por roles (ADMIN, EMISOR)
+- 👥 Modulo de clientes
+- 🧾 Modulo de facturas con validacion
+- 📤 Emision, PDF y envio por correo
+- 🕓 Historial basico de eventos
+- 🟢 CI con build backend y frontend
