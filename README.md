@@ -1,62 +1,83 @@
-# Sistema de Facturacion Electronica Automatizada
+# Sistema de Facturacion Electronica Automatizado
 
-MVP para Peru (PEN + IGV 18%) con flujo: crear factura, validar, emitir, generar PDF, enviar por correo y conservar historial.
+MVP orientado a Peru (PEN + IGV 18%) para gestionar facturas de extremo a extremo.
 
-## Stack
+Flujo principal del sistema:
 
-- Backend: Java 17 + Spring Boot + MySQL + Flyway + iText + JWT
+1. Registrar cliente
+2. Crear factura con items
+3. Validar calculos y reglas
+4. Emitir factura
+5. Generar PDF
+6. Enviar por correo
+7. Mantener historial y trazabilidad
+
+## Que incluye este proyecto
+
+- Backend API con Spring Boot, JWT, persistencia y migraciones
+- Frontend web con React para operar clientes y facturas
+- Generacion de PDF con iText
+- Envio de correo SMTP (recomendado SendGrid)
+- Contenedores Docker para entorno local
+- CI en GitHub Actions
+- Archivos listos para despliegue en Railway (backend) y Vercel (frontend)
+
+## Stack tecnico
+
+- Backend: Java 17, Spring Boot, Spring Security, JPA, Flyway, MySQL, iText
 - Frontend: React + Vite
-- Correo: SMTP (SendGrid recomendado)
-- Deploy objetivo: Railway (backend + MySQL) y Vercel (frontend)
+- Infra: Docker Compose
+- Auth: JWT (access + refresh)
 
-## Estructura
+## Estructura del repositorio
 
-- backend: API REST y seguridad
-- frontend: UI React
-- database: semillas y artefactos SQL
+- backend: API REST, seguridad y logica de negocio
+- frontend: aplicacion React
+- database: artefactos de base de datos
+- scripts: smoke tests
+- docs: guias operativas de despliegue
 
-## Variables de entorno
+## Inicio rapido (recomendado)
 
-Usa [.env.example](.env.example) como base.
+Prerequisitos:
 
-Backend clave:
+- Docker + Docker Compose
+- Puertos libres 5173, 8080, 3306, 8025
 
-- SPRING_PROFILES_ACTIVE
-- APP_BASE_URL
-- DB_URL (o DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD)
-- JWT_SECRET, JWT_ACCESS_EXP_MIN, JWT_REFRESH_EXP_DAYS
-- MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_FROM
-- CORS_ALLOWED_ORIGINS
+Pasos:
 
-Frontend clave:
-
-- VITE_API_URL
-
-## Ejecucion local con Docker
-
-1. Copia `.env.example` a `.env` y ajusta credenciales.
-2. Ejecuta:
+1. Copia `.env.example` a `.env`
+2. Ajusta secretos y credenciales
+3. Ejecuta:
 
 ```bash
 docker compose up --build
 ```
 
-3. Accesos:
+Accesos locales:
 
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:8080
 - Health: http://localhost:8080/actuator/health
+- Mailpit (correo de prueba): http://localhost:8025
 
-## Ejecucion local sin Docker
+## Inicio rapido sin Docker
 
-### Backend
+Backend:
 
 ```bash
 cd backend
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
-### Frontend
+En Windows:
+
+```powershell
+cd backend
+.\mvnw.cmd spring-boot:run
+```
+
+Frontend:
 
 ```bash
 cd frontend
@@ -64,87 +85,109 @@ npm install
 npm run dev
 ```
 
-## Despliegue Railway (Backend)
+## Primera prueba funcional (5 minutos)
 
-1. Crea un proyecto en Railway y selecciona el repositorio.
-2. Crea un servicio MySQL dentro del proyecto.
-3. Crea un servicio para backend apuntando a la carpeta `backend`.
-4. Configura variables del backend:
+1. Registra un usuario en `/api/v1/auth/register`
+2. Inicia sesion en la UI
+3. Crea un cliente
+4. Crea una factura con items
+5. Emite la factura
+6. Descarga el PDF
+7. Envia la factura por correo
 
-- `SPRING_PROFILES_ACTIVE=prod`
-- `PORT=8080`
-- `APP_BASE_URL=https://<tu-backend>.up.railway.app`
-- `DB_URL=jdbc:mysql://<host>:<port>/<db>?useSSL=true&allowPublicKeyRetrieval=true&serverTimezone=UTC`
-- `DB_USER=<usuario>`
-- `DB_PASSWORD=<password>`
-- `JWT_SECRET=<secreto_largo>`
-- `JWT_ACCESS_EXP_MIN=30`
-- `JWT_REFRESH_EXP_DAYS=7`
-- `MAIL_HOST=smtp.sendgrid.net`
-- `MAIL_PORT=587`
-- `MAIL_USERNAME=apikey`
-- `MAIL_PASSWORD=<sendgrid_api_key>`
-- `MAIL_FROM=<dominio_verificado_en_sendgrid>`
-- `CORS_ALLOWED_ORIGINS=https://<tu-frontend>.vercel.app,http://localhost:5173`
+Tip: si usas Mailpit en local, revisa los correos en http://localhost:8025.
 
-5. Healthcheck recomendado en Railway: `/actuator/health`
+## Variables de entorno
 
-Nota: las migraciones Flyway se ejecutan al arranque.
+Usa `.env.example` como plantilla principal.
 
-## Despliegue Vercel (Frontend)
+Backend (clave):
 
-1. Crea proyecto en Vercel apuntando a carpeta `frontend`.
-2. Configura variable:
+- SPRING_PROFILES_ACTIVE
+- APP_BASE_URL
+- DB_URL (o DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD)
+- JWT_SECRET
+- JWT_ACCESS_EXP_MIN
+- JWT_REFRESH_EXP_DAYS
+- MAIL_HOST
+- MAIL_PORT
+- MAIL_USERNAME
+- MAIL_PASSWORD
+- MAIL_FROM
+- CORS_ALLOWED_ORIGINS
 
-- `VITE_API_URL=https://<tu-backend>.up.railway.app`
+Frontend (clave):
 
-3. Build settings:
+- VITE_API_URL
 
-- Build command: `npm run build`
-- Output directory: `dist`
+## Endpoints principales
 
-4. El archivo [frontend/vercel.json](frontend/vercel.json) ya incluye rewrite SPA para rutas internas.
+Auth:
 
-## Checklist final de despliegue
+- POST /api/v1/auth/register
+- POST /api/v1/auth/login
+- POST /api/v1/auth/refresh
 
-- Ver detalle en [docs/DEPLOY_CHECKLIST.md](docs/DEPLOY_CHECKLIST.md)
+Clientes:
 
-## Smoke test post-deploy
+- POST /api/v1/customers
+- GET /api/v1/customers
+- GET /api/v1/customers/{id}
 
-Windows (PowerShell):
+Facturas:
+
+- POST /api/v1/invoices
+- POST /api/v1/invoices/validate
+- GET /api/v1/invoices
+- GET /api/v1/invoices/{id}
+- POST /api/v1/invoices/{id}/emit
+- GET /api/v1/invoices/{id}/pdf
+- POST /api/v1/invoices/{id}/send-email
+
+## Despliegue
+
+### Railway (backend)
+
+1. Crea proyecto en Railway
+2. Agrega MySQL
+3. Crea servicio backend apuntando a carpeta `backend`
+4. Configura variables de entorno (ver `.env.example`)
+5. Usa healthcheck en `/actuator/health`
+
+Nota: Flyway ejecuta migraciones automaticamente al arranque.
+
+### Vercel (frontend)
+
+1. Crea proyecto apuntando a carpeta `frontend`
+2. Configura `VITE_API_URL` con la URL publica del backend
+3. Build command: `npm run build`
+4. Output directory: `dist`
+
+El archivo `frontend/vercel.json` ya incluye rewrite SPA para rutas internas.
+
+## Verificacion post deploy
+
+Checklist completa:
+
+- docs/DEPLOY_CHECKLIST.md
+
+Smoke test (PowerShell):
 
 ```powershell
 ./scripts/smoke-test.ps1 -BaseUrl "https://api-tu-proyecto.up.railway.app" -FrontendUrl "https://tu-frontend.vercel.app"
 ```
 
-## Endpoints base
+Smoke test (bash):
 
-Auth:
+```bash
+./scripts/smoke-test.sh "https://api-tu-proyecto.up.railway.app" "https://tu-frontend.vercel.app"
+```
 
-- POST `/api/v1/auth/register`
-- POST `/api/v1/auth/login`
-- POST `/api/v1/auth/refresh`
+## Estado del MVP
 
-Clientes:
-
-- POST `/api/v1/customers`
-- GET `/api/v1/customers`
-- GET `/api/v1/customers/{id}`
-
-Facturas:
-
-- POST `/api/v1/invoices`
-- POST `/api/v1/invoices/validate`
-- GET `/api/v1/invoices`
-- GET `/api/v1/invoices/{id}`
-- POST `/api/v1/invoices/{id}/emit`
-- GET `/api/v1/invoices/{id}/pdf`
-- POST `/api/v1/invoices/{id}/send-email`
-
-## Estado actual
-
-- Seguridad JWT implementada
-- Modelo y migracion inicial implementados
-- Flujo principal de facturas implementado
-- Frontend base conectado al API
-- Archivos de despliegue preparados para Railway y Vercel
+- JWT y control de acceso por roles (ADMIN, EMISOR)
+- Modulo de clientes
+- Modulo de facturas con validacion
+- Emision, PDF y envio por correo
+- Historial basico de eventos
+- CI con build backend y frontend
