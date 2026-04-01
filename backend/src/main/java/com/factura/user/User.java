@@ -52,16 +52,16 @@ public class User {
     private OffsetDateTime updatedAt;
 
     @PrePersist
-    @SuppressWarnings("unused")
-    void prePersist() {
+    @SuppressWarnings({"unused"})
+    private void prePersist() {
         OffsetDateTime now = OffsetDateTime.now();
         createdAt = now;
         updatedAt = now;
     }
 
     @PreUpdate
-    @SuppressWarnings("unused")
-    void preUpdate() {
+    @SuppressWarnings({"unused"})
+    private void preUpdate() {
         updatedAt = OffsetDateTime.now();
     }
 

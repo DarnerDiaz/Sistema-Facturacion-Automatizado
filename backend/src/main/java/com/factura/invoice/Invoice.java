@@ -1,8 +1,16 @@
 package com.factura.invoice;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import com.factura.company.Company;
 import com.factura.customer.Customer;
 import com.factura.user.User;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,12 +26,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "invoices")
@@ -83,16 +85,16 @@ public class Invoice {
     private OffsetDateTime updatedAt;
 
     @PrePersist
-    @SuppressWarnings("unused")
-    void prePersist() {
+    @SuppressWarnings({"unused"})
+    private void prePersist() {
         OffsetDateTime now = OffsetDateTime.now();
         createdAt = now;
         updatedAt = now;
     }
 
     @PreUpdate
-    @SuppressWarnings("unused")
-    void preUpdate() {
+    @SuppressWarnings({"unused"})
+    private void preUpdate() {
         updatedAt = OffsetDateTime.now();
     }
 

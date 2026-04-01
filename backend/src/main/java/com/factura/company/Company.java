@@ -1,5 +1,8 @@
 package com.factura.company;
 
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,8 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "companies")
@@ -41,16 +42,16 @@ public class Company {
     private OffsetDateTime updatedAt;
 
     @PrePersist
-    @SuppressWarnings("unused")
-    void prePersist() {
+    @SuppressWarnings({"unused"})
+    private void prePersist() {
         OffsetDateTime now = OffsetDateTime.now();
         createdAt = now;
         updatedAt = now;
     }
 
     @PreUpdate
-    @SuppressWarnings("unused")
-    void preUpdate() {
+    @SuppressWarnings({"unused"})
+    private void preUpdate() {
         updatedAt = OffsetDateTime.now();
     }
 
